@@ -19,10 +19,6 @@ plat[11] = new Platforma(910, 160, 100, 40);
 
 var grafikaMonety = new Image();
 grafikaMonety.src = 'files/coin-flip-49.gif';
-// grafikaMonety.style.height = '40px';
-// grafikaMonety.style.width = '40px';
-// grafikaMonety.style.borderRadius = '50%'
-grafikaMonety.backgroundColor = 'gold';
 var mon = [];
 mon[0] = new Moneta(110, 180, 80, 80);
 mon[1] = new Moneta(250, 290, 80, 80);
@@ -35,21 +31,18 @@ mon[7] = new Moneta(210, 0, 80, 80);
 mon[8] = new Moneta(1170, 250, 80, 80);
 
 var przesz = [];
-przesz[0] = new Przeszkoda(40, 170, 40, 50, 5, 'files/flame.png')
-przesz[1] = new Przeszkoda(420, 340, 35, 55, 10, 'files/dragon.png')
+przesz[0] = new Przeszkoda(40, 170, 40, 70, 5, 'files/flame.png');
+przesz[1] = new Przeszkoda(420, 340, 55, 75, 10, 'files/dragon.png');
 
-function rysuj() {
-	//wyczyszczenie obszaru roboczego, by kolejne klatki nie nakłądały się na siebie
-	ctx.clearRect(0, 0, can.width, can.height);
-	//rysowanie platform z wykorzystaniem pętli po tablicy plat 
-	rysujPlatformy();
-	// rysowanie monet z wykorzystaniem pętli po tablicy mon
-	rysujMonety();
-	// rysowanie przeszkód z wykorzystaniem pętli po tablicy przesz
-	rysujPrzeszkody();
-}
-
-setInterval(rysuj, 10);
+var grafikaPostaci = new Image();
+grafikaPostaci.src = 'files/hero.png';
+var xPos = 10;
+var yPos = 20;
+var szerPos = 40;
+var wysPos = 65;
+var hp = 20;
+var wysSkok = 120;
+var licznik = 0;
 
 function Platforma(px, py, pszer, pwys) {
 	this.x = px;
@@ -98,3 +91,104 @@ function rysujPrzeszkody() {
 		}
 	}
 }
+
+function rysujPostac() {
+	ctx.drawImage(grafikaPostaci, xPos, yPos, szerPos, wysPos)
+}
+
+// wprowadzamy zmienną dy, która ułatwi sprawdzanie, czy posytać stoi na platformie; gry dy = 0 postać zatrzymuje się, gdy dy>0 opada
+var dy = 0;
+function grawitacja() {
+	if(dy >= 0) {
+		dy = 3;
+		for(var i = 0; i < plat.length; i++) {
+			if(yPos + wysPos > plat[i].y &&
+			yPos + 0.8*wysPos < plat[i].y &&
+			xPos + szerPos/2 > plat[i].x &&
+			xPos + szerPos/2 < plat[i].x + plat[i].szer) {
+				dy = 0;
+			}
+		}
+	} else  {
+		licznik = licznik + 3;
+		if(licznik >= wysSkok) {
+			dy = 0;
+			licznik = 0;
+		}
+	}
+	yPos = yPos + dy;
+}
+
+// sterowanie postacią lewo/prawo; dx decyduje o ruchu postaci; gdy dy=0 to stoi, inne wartości to ruch w lewo lub w prawo
+document.addEventListener('keydown', ruchPostaci, false);
+document.addEventListener('keyup', stopPostaci, false);
+var dx = 0;
+function ruchPostaci(e) {
+	if(e.keyCode == 37) {
+		dx = -2;
+	} else if(e.keyCode ==39) {
+		dx = 2;
+	}
+}
+function stopPostaci(e) {
+	if(e.keyCode == 37) {
+		dx = 0;
+	} else if(e.keyCode == 39) {
+		dx = 0;
+	} else if(e.keyCode == 38 && dy == 0) {
+		dy = -3;
+	}
+}
+
+//  zbieranie monet 
+function kolizjaZMoneta() {
+	for(var i = 0; i < mon.length; i++) {
+		if(yPos < mon[i].y + mon[i].wys/2 &&
+		yPos + wysPos > mon[i].y + mon[i].wys/2 &&
+		xPos < mon[i].x + mon[i].szer/2 &&
+		xPos + szerPos > mon[i].x + mon[i].szer/2) {
+			mon[i].czyWidoczna = false;
+		}
+	}
+}
+
+// strata punktó = kolizja z przeszkodą
+function kolizjaZPrzeszkoda() {
+	for(var i = 0; i < przesz.length; i++) {
+		if(yPos < przesz[i].y + przesz[i].wys/2 &&
+		yPos + wysPos > przesz[i].y + przesz[i].wys/2 &&
+		xPos < przesz[i].x + przesz[i].szer/2 &&
+		xPos + szerPos > przesz[i].x + przesz[i].szer/2 &&
+		przesz[i].czyWidoczna == true) {
+			przesz[i].czyWidoczna = false;
+			hp = hp - przesz[i].zabiera;
+			if(hp <= 0) {
+				location.reload();
+			}
+		}
+	}
+}
+
+
+function rysuj() {
+	//wyczyszczenie obszaru roboczego, by kolejne klatki nie nakłądały się na siebie
+	ctx.clearRect(0, 0, can.width, can.height);
+	//rysowanie platform z wykorzystaniem pętli po tablicy plat 
+	rysujPlatformy();
+	// rysowanie monet z wykorzystaniem pętli po tablicy mon
+	rysujMonety();
+	// rysowanie przeszkód z wykorzystaniem pętli po tablicy przesz
+	rysujPrzeszkody();
+	// rysowanie postaci (tylko jedna, więc nie ma żadnej tablicy)
+	rysujPostac();
+	// spadanie postaci
+	grawitacja();
+	// ruch postaci
+	xPos = xPos + dx;
+	// zbieranie monet (po dotknięciu moneta znika)
+	kolizjaZMoneta();
+	// strata punktów po dotknięciu przeszkody
+	kolizjaZPrzeszkoda();
+}
+
+setInterval(rysuj, 10);
