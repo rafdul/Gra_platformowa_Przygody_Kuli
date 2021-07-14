@@ -10,11 +10,11 @@ plat[1] = new Platforma(730, 500, 750, 80);
 plat[2] = new Platforma(80, 260, 100, 40);
 plat[3] = new Platforma(240, 360, 100, 40); 
 plat[4] = new Platforma(500, 430, 100, 40);
-plat[5] = new Platforma(380, 180, 100, 40); //
+plat[5] = new Platforma(380, 180, 100, 40);
 plat[6] = new Platforma(630, 300, 100, 40); 
 plat[7] = new Platforma(750, 160, 100, 40); 
 plat[8] = new Platforma(1000, 390, 100, 40);
-plat[9] = new Platforma(230, 140, 100, 40); //
+plat[9] = new Platforma(230, 140, 100, 40); 
 plat[10] = new Platforma(1160, 320, 100, 40);
 plat[11] = new Platforma(920, 250, 100, 40); 
 
@@ -24,11 +24,11 @@ var mon = [];
 mon[0] = new Moneta(90, 190, 80, 80);
 mon[1] = new Moneta(250, 290, 80, 80); 
 mon[2] = new Moneta(510, 360, 80, 80);
-mon[3] = new Moneta(390, 110, 80, 80); //
+mon[3] = new Moneta(390, 110, 80, 80);
 mon[4] = new Moneta(640, 230, 80, 80); 
 mon[5] = new Moneta(760, 90, 80, 80); 
 mon[6] = new Moneta(1010, 320, 80, 80);
-mon[7] = new Moneta(240, 70, 80, 80); //
+mon[7] = new Moneta(240, 70, 80, 80);
 mon[8] = new Moneta(1170, 250, 80, 80);
 mon[9] = new Moneta(930, 180, 80, 80);
 
@@ -40,14 +40,13 @@ przesz[3] = new Przeszkoda(580, 20, 55, 75, 10, 'files/dragon.png');
 przesz[4] = new Przeszkoda(1170, 400, 40, 70, 5, 'files/flame.png');
 przesz[5] = new Przeszkoda(1100, 80, 55, 75, 10, 'files/dragon.png');
 
-
 var grafikaPostaci = new Image();
 grafikaPostaci.src = 'files/hero.png';
 var xPos = 10;
 var yPos = 20;
 var szerPos = 40;
 var wysPos = 65;
-var hp = 2;
+var hp = 20;
 var wysSkok = 160;
 var licznik = 0;
 
@@ -148,13 +147,16 @@ function stopPostaci(e) {
 }
 
 //  zbieranie monet 
+var zdobyteMonety = 0;
 function kolizjaZMoneta() {
 	for(var i = 0; i < mon.length; i++) {
 		if(yPos < mon[i].y + mon[i].wys/2 &&
 		yPos + wysPos > mon[i].y + mon[i].wys/2 &&
 		xPos < mon[i].x + mon[i].szer/2 &&
-		xPos + szerPos > mon[i].x + mon[i].szer/2) {
+		xPos + szerPos > mon[i].x + mon[i].szer/2 &&
+    mon[i].czyWidoczna == true) {
 			mon[i].czyWidoczna = false;
+      zdobyteMonety++
 		}
 	}
 }
@@ -177,6 +179,7 @@ function kolizjaZPrzeszkoda() {
 	}
 }
 
+// zakończenie gry - przegrana
 function przegrywasz() {
 	if(przegrales == true) {
 		ctx.clearRect(0, 0, can.width, can.height);
@@ -200,6 +203,14 @@ function wygrywasz() {
 	}
 }
 
+// pokazuj wynik
+function wynik() {
+  var rezultat = hp;
+  var liczbaMonet = zdobyteMonety;
+  ctx.font = '20px Georgia';
+  ctx.fillText(`Twoje punkty życia: ${rezultat}`, 1050, 25);
+  ctx.fillText(`Twoje monety: ${liczbaMonet}`, 1050, 55);
+}
 
 function rysuj() {
 	//wyczyszczenie obszaru roboczego, by kolejne klatki nie nakłądały się na siebie
@@ -220,9 +231,12 @@ function rysuj() {
 	kolizjaZMoneta();
 	// strata punktów po dotknięciu przeszkody
 	kolizjaZPrzeszkoda();
+	// koniec gry po stracie punktów życia (hp)
+	przegrywasz();
 	// koniec gry po zebraniu wszystkich monet
 	wygrywasz();
-	przegrywasz()
+  // pokazuje wynik
+  wynik();
 }
 
 setInterval(rysuj, 10);
