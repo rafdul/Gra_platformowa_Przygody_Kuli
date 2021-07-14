@@ -6,33 +6,40 @@ grafikaPlatformy.src = 'files/file1.jpg';
 var plat = [];
 plat[0] = new Platforma(0, 500, 750, 80);
 plat[1] = new Platforma(730, 500, 750, 80);
-plat[2] = new Platforma(100, 250, 100, 40);
-plat[3] = new Platforma(240, 360, 100, 40);
+
+plat[2] = new Platforma(80, 260, 100, 40);
+plat[3] = new Platforma(240, 360, 100, 40); 
 plat[4] = new Platforma(500, 430, 100, 40);
-plat[5] = new Platforma(380, 180, 100, 40);
-plat[6] = new Platforma(730, 300, 100, 40);
-plat[7] = new Platforma(670, 100, 100, 40);
+plat[5] = new Platforma(380, 180, 100, 40); //
+plat[6] = new Platforma(630, 300, 100, 40); 
+plat[7] = new Platforma(750, 160, 100, 40); 
 plat[8] = new Platforma(1000, 390, 100, 40);
-plat[9] = new Platforma(200, 70, 100, 40);
+plat[9] = new Platforma(230, 140, 100, 40); //
 plat[10] = new Platforma(1160, 320, 100, 40);
-plat[11] = new Platforma(910, 160, 100, 40);
+plat[11] = new Platforma(920, 250, 100, 40); 
 
 var grafikaMonety = new Image();
 grafikaMonety.src = 'files/coin-flip-49.gif';
 var mon = [];
-mon[0] = new Moneta(110, 180, 80, 80);
-mon[1] = new Moneta(250, 290, 80, 80);
+mon[0] = new Moneta(90, 190, 80, 80);
+mon[1] = new Moneta(250, 290, 80, 80); 
 mon[2] = new Moneta(510, 360, 80, 80);
-mon[3] = new Moneta(390, 110, 80, 80);
-mon[4] = new Moneta(740, 230, 80, 80);
-mon[5] = new Moneta(680, 30, 80, 80);
+mon[3] = new Moneta(390, 110, 80, 80); //
+mon[4] = new Moneta(640, 230, 80, 80); 
+mon[5] = new Moneta(760, 90, 80, 80); 
 mon[6] = new Moneta(1010, 320, 80, 80);
-mon[7] = new Moneta(210, 0, 80, 80);
+mon[7] = new Moneta(240, 70, 80, 80); //
 mon[8] = new Moneta(1170, 250, 80, 80);
+mon[9] = new Moneta(930, 180, 80, 80);
 
 var przesz = [];
-przesz[0] = new Przeszkoda(40, 170, 40, 70, 5, 'files/flame.png');
+przesz[0] = new Przeszkoda(60, 170, 40, 70, 5, 'files/flame.png');
 przesz[1] = new Przeszkoda(420, 340, 55, 75, 10, 'files/dragon.png');
+przesz[2] = new Przeszkoda(780, 310, 40, 70, 5, 'files/flame.png');
+przesz[3] = new Przeszkoda(580, 20, 55, 75, 10, 'files/dragon.png');
+przesz[4] = new Przeszkoda(1170, 400, 40, 70, 5, 'files/flame.png');
+przesz[5] = new Przeszkoda(1100, 80, 55, 75, 10, 'files/dragon.png');
+
 
 var grafikaPostaci = new Image();
 grafikaPostaci.src = 'files/hero.png';
@@ -40,8 +47,8 @@ var xPos = 10;
 var yPos = 20;
 var szerPos = 40;
 var wysPos = 65;
-var hp = 20;
-var wysSkok = 120;
+var hp = 2;
+var wysSkok = 160;
 var licznik = 0;
 
 function Platforma(px, py, pszer, pwys) {
@@ -152,7 +159,8 @@ function kolizjaZMoneta() {
 	}
 }
 
-// strata punktó = kolizja z przeszkodą
+// strata punktów = kolizja z przeszkodą
+var przegrales = false;
 function kolizjaZPrzeszkoda() {
 	for(var i = 0; i < przesz.length; i++) {
 		if(yPos < przesz[i].y + przesz[i].wys/2 &&
@@ -163,9 +171,32 @@ function kolizjaZPrzeszkoda() {
 			przesz[i].czyWidoczna = false;
 			hp = hp - przesz[i].zabiera;
 			if(hp <= 0) {
-				location.reload();
+				przegrales = true;
 			}
 		}
+	}
+}
+
+function przegrywasz() {
+	if(przegrales == true) {
+		ctx.clearRect(0, 0, can.width, can.height);
+		ctx.font = '120px Georgia';
+		ctx.fillText('Spróbuj jeszcze raz!', 170, 330);
+	}
+}
+
+// zakończenie gry - wygrana
+function wygrywasz() {
+	var czySaMonety = false;
+	for(var i =0; i < mon.length; i++) {
+		if(mon[i].czyWidoczna == true) {
+			czySaMonety = true;
+		}
+	}
+	if(czySaMonety == false) {
+		ctx.clearRect(0, 0, can.width, can.height);
+		ctx.font = '120px Georgia';
+		ctx.fillText('Wygrałeś!', 370, 330);
 	}
 }
 
@@ -189,6 +220,9 @@ function rysuj() {
 	kolizjaZMoneta();
 	// strata punktów po dotknięciu przeszkody
 	kolizjaZPrzeszkoda();
+	// koniec gry po zebraniu wszystkich monet
+	wygrywasz();
+	przegrywasz()
 }
 
 setInterval(rysuj, 10);
