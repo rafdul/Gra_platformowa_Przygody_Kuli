@@ -38,3 +38,19 @@ h2 {
   display: block;
   padding: 20px;
 }
+
+.stoper {
+  max-width: 1280px;
+  background-color: rgb(175, 214, 165);
+  margin: 20px auto;
+  display: block;
+}
+
+h4 {
+  text-align: center;
+}
+
+#przyciski {
+  text-align: center;
+  padding: 20px;
+}

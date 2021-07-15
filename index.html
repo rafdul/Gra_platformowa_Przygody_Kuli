@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gra</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 </head>
 <body>
   <h1>Przygody kuli</h1>
@@ -18,6 +19,17 @@
     <h2>Przykładowy film</h2>
     <iframe class="film-item" width="560" height="315" src="https://www.youtube.com/embed/rLl9XBg7wSs?start=330" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>Twoja przeglądarka nie obsługuje iframe</iframe>
   </div>
+  <div class="stoper">
+    <h2>Stoper</h2>
+    <h2 id="wynik">0:00:00:0</h2>
+    <h4 id="miedzy"></h4>
+    <div id="przyciski">
+      <button id="reset">Reset</button>
+      <button id="miedzyczas">Międzyczas</button>
+      <button id="start">Start</button>
+    </div>
+  </div>
   <script src="script.js"></script>
+  <script src="stoper.js"></script>
 </body>
 </html>
