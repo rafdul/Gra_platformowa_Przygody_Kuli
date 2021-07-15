@@ -7,3 +7,34 @@ canvas {
 h1 {
   text-align: center;
 }
+
+.maps {
+  max-width: 1280px;
+  background-color: rgb(224, 220, 220);
+  margin: 20px auto;
+  display: block;
+}
+
+.maps-item {
+  margin: 20px auto;
+  display: block;
+  padding: 20px;
+}
+
+h2 {
+  text-align: center;
+  padding-top: 20px;
+}
+
+.film {
+  max-width: 1280px;
+  background-color: rgb(224, 191, 191);
+  margin: 20px auto;
+  display: block;
+}
+
+.film-item {
+  margin: 20px auto;
+  display: block;
+  padding: 20px;
+}

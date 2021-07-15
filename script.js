@@ -199,16 +199,23 @@ function wygrywasz() {
 	if(czySaMonety == false) {
 		ctx.clearRect(0, 0, can.width, can.height);
 		ctx.font = '120px Georgia';
+    ctx.fillStyle = 'darkblue';
 		ctx.fillText('Wygrałeś!', 370, 330);
 	}
 }
 
 // pokazuj wynik
-function wynik() {
+function wynikHP() {
   var rezultat = hp;
-  var liczbaMonet = zdobyteMonety;
   ctx.font = '20px Georgia';
+  ctx.fillStyle = '#eb4d4b';
   ctx.fillText(`Twoje punkty życia: ${rezultat}`, 1050, 25);
+}
+
+function wynikMonety() {
+  var liczbaMonet = zdobyteMonety;
+  ctx.font = 'bold 20px Georgia';
+  ctx.fillStyle = '#eb4d4b';
   ctx.fillText(`Twoje monety: ${liczbaMonet}`, 1050, 55);
 }
 
@@ -235,8 +242,9 @@ function rysuj() {
 	przegrywasz();
 	// koniec gry po zebraniu wszystkich monet
 	wygrywasz();
-  // pokazuje wynik
-  wynik();
+  // pokazują wynik ile zostało życia (HP) oraz liczbę zdobytych monet
+  wynikHP();
+  wynikMonety()
 }
 
 setInterval(rysuj, 10);
