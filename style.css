@@ -54,3 +54,29 @@ h4 {
   text-align: center;
   padding: 20px;
 }
+
+.data {
+  max-width: 1280px;
+  background-color: rgb(165, 203, 214);
+  margin: 20px auto;
+  display: block;
+}
+
+.data-inputs {
+  text-align: center;
+}
+
+#odliczD {
+  margin: 20px;
+}
+
+.zegar {
+  max-width: 1280px;
+  background-color: rgb(240, 102, 178);
+  margin: 20px auto;
+  display: block;
+}
+
+#zegarWynik {
+  padding-bottom: 20px;
+}
