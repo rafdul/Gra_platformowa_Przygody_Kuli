@@ -13,8 +13,8 @@ $(document).ready(function(){
 
       var pozostaleSek = Math.floor(sekundy % 60);
       var pozostaleMin = Math.floor(minuty % 60);
-      var pozostaleGodz = Math.floor(godziny % 60);
-      var pozostaleDni = Math.floor(dni % 60);
+      var pozostaleGodz = Math.floor(godziny % 24);
+      var pozostaleDni = Math.floor(dni % 365);
       var pozostaleLata = Math.floor(lata);
 
       return `Do podanej daty pozostało ${pozostaleLata} lat, ${pozostaleDni} dni, ${pozostaleGodz} godzin, ${pozostaleMin} minut, ${pozostaleSek} sekund.`
