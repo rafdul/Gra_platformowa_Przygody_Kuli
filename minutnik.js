@@ -1,7 +1,7 @@
 const button = document.getElementById('odliczM');
 let odliczajOdMinuty = 0;
 let odliczajWSek = 0;
-let interval = ';'
+let interval = '';
 
 button.addEventListener('click', e => {
   e.preventDefault();
@@ -23,7 +23,7 @@ function odliczaj() {
 
   const inputWSek = odliczajOdMinuty*60;
   const reszta = (inputWSek - odliczajWSek)%60;
-  pokazOdliczanie.innerHTML = Math.floor((inputWSek - odliczajWSek)/60) + ':' + ((reszta > 9) ? reszta : '0'+reszta) ;
+  pokazOdliczanie.innerHTML = Math.floor((inputWSek - odliczajWSek)/60) + ':' + ((reszta > 9) ? reszta : '0' + reszta) ;
 
   if(pokazOdliczanie.textContent[0] == '-') {
     pokazOdliczanie.innerHTML = '0:00';
